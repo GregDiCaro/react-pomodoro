@@ -1,37 +1,35 @@
 import React from 'react'
 import moment from 'moment';
-import momentDurationFormatSetUp from 'moment-duration-format';
-import React, {useState} from 'react';
-import { useEffect } from 'react';
+import momentDurationFormatSetup from 'moment-duration-format';
 
-momentDurationFormatSetUp(moment);
 
-const Timeleft = ({
+momentDurationFormatSetup(moment);
 
-    sessionlength })=> {
 
-        const[timeLeft, setTimeLeft] = useState(sessionLength);
 
-        useEffect(() => {
+const Timeleft = ({handleResetButtonClick,handleStartStopClick,timeLeft,timerLabel,startStopButtonLabel})=> {
 
-            setTimeLeft (sessionLength); 
+   
 
-        },[sessionLength]);
+        
 
-        const handleStartStopClick = ()=> {
-
-            setInterval(() => {
-
-                console.log('hello');
-            },1000)
-        }
         const formattedTimeLeft = moment.duration(timeLeft, 's').format('mm:ss');
     return (
-        <div>
-            {formattedTimeLeft}
-            <button onClick={handleStartStopClick}>Start</button>
+        <div className="flex flex-col justify-evenly items-center w-64 h-64 bg-red-600 rounded-full">
+            
+            <p className="text-red-900 text-2xl  "  id="timer-label">{timerLabel}</p>
+            <p className="font-clock text-4xl font-bold" id="timer-left">{formattedTimeLeft}</p>
+
+            <div className="grid grid-flow-col gap-2">
+            <button className="text-red-400 font-semibold bg-green-900 px-4 py-2 rounded-lg" onClick={handleStartStopClick}>{startStopButtonLabel}</button>
+
+            <button className="border-2 text-green-800 border-green-800 border-solid px-4 py-2 rounded-lg
+             id='reset' onClick={handleResetButtonClick}">Reset 
+            </button>
+            </div>
         </div> );
     
 };
+    
 
 export default Timeleft;

@@ -1,6 +1,6 @@
 
-import moment from 'moment';
 import React from 'react';
+import moment from 'moment';
 
 const Session = ({
 sessionLength,
@@ -9,24 +9,27 @@ incrementSessionLengthByOneMinute,
 }) => {
     
     
-    const sessionLengthInMinutes = moment.duration(sessionLength, 's').minutes();
+    const sessionLengthInMinutes = moment.duration(sessionLength, 's').asMinutes();
     return (
 
-            <div>
-                    <p id="session-label">session</p>
-                    <p id="session-length">{sessionLengthInMinutes}</p>
-                    <button id="session-decrement" onClick={decrementSessionLengthByOneMinute}>-</button>
-                    <button id="session-increment" onClick={incrementSessionLengthByOneMinute}>+</button>
+            <BreakSessionContainer>
+                    <BreakSessionLabel id="session-label">session</BreakSessionLabel>
+                    <BreakSessionTime id="session-length">{sessionLengthInMinutes}</BreakSessionTime>
+                    <PlusMinusButtonContainer>
+                    <PlusMinusButton id="session-decrement" onClick={decrementSessionLengthByOneMinute}>-</PlusMinusButton>
+                    <PlusMinusButton id="session-increment" onClick={incrementSessionLengthByOneMinute}>+</PlusMinusButton>
+                    </PlusMinusButtonContainer>
+                    
                     
 
-            </div>
+            </BreakSessionContainer>
 
 
     );
         
 
     
-};
+}
 
-export default Session
+export default Session;
 
