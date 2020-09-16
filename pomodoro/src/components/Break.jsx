@@ -15,18 +15,17 @@ const Break = ({
     const breakLengthInMinutes = moment.duration(breakLength, 's').asMinutes();
     return (
 
-            <BreakSessionContainer>
-                    <BreakSessionLabel id="break-label">break</BreakSessionLabel>
-                    <BreakSessionTime id="break-length">{breakLengthInMinutes}</BreakSessionTime>
-                    <PlusMinusButtonContainer>
+        <div>
+        <p id="break-label">break</p>
+        <p id="break-length">{breakLengthInMinutes}</p>
+    
+        <button id="break-decrement" onClick={decrementBreakLengthByOneMinute}>-</button>
+        <button id="break-increment" onClick={incrementBreakLengthByOneMinute}>+</button>
+       
+        
+        
 
-                    <PlusMinusButton id="break-decrement" onClick={decrementBreakLengthByOneMinute}>-</PlusMinusButton>
-                    <PlusMinusButton id="break-increment" onClick={incrementBreakLengthByOneMinute}>+</PlusMinusButton>
-                    
-                    </PlusMinusButtonContainer>
-                   
-
-            </BreakSessionContainer>
+</div>
 
 
     );

@@ -11,18 +11,18 @@ incrementSessionLengthByOneMinute,
     
     const sessionLengthInMinutes = moment.duration(sessionLength, 's').asMinutes();
     return (
-
-            <BreakSessionContainer>
-                    <BreakSessionLabel id="session-label">session</BreakSessionLabel>
-                    <BreakSessionTime id="session-length">{sessionLengthInMinutes}</BreakSessionTime>
-                    <PlusMinusButtonContainer>
-                    <PlusMinusButton id="session-decrement" onClick={decrementSessionLengthByOneMinute}>-</PlusMinusButton>
-                    <PlusMinusButton id="session-increment" onClick={incrementSessionLengthByOneMinute}>+</PlusMinusButton>
-                    </PlusMinusButtonContainer>
+                
+            <div>
+                    <p id="session-label">session</p>
+                    <p id="session-length">{sessionLengthInMinutes}</p>
+                
+                    <button id="session-decrement" onClick={decrementSessionLengthByOneMinute}>-</button>
+                    <button id="session-increment" onClick={incrementSessionLengthByOneMinute}>+</button>
+                   
                     
                     
 
-            </BreakSessionContainer>
+            </div>
 
 
     );
