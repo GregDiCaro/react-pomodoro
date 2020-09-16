@@ -23,9 +23,6 @@ const Timeleft = ({handleResetButtonClick,handleStartStopClick,timeLeft,timerLab
             <div className="grid grid-flow-col gap-2">
             <button className="text-red-400 font-semibold bg-green-900 px-4 py-2 rounded-lg" onClick={handleStartStopClick}>{startStopButtonLabel}</button>
 
-            <button className="border-2 text-green-800 border-green-800 border-solid px-4 py-2 rounded-lg
-             id='reset' onClick={handleResetButtonClick}">Reset 
-            </button>
             </div>
         </div> );
     

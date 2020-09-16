@@ -3,14 +3,15 @@ import Break from './components/Break';
 import './assets/main.css';
 import Session from './components/Session';
 import TimeLeft from './components/Timeleft';
+import soundfile from './ride.wav';
 
 
 
 function App() {
 
-    const audioElement = useRef(null);
+    const audioElement = useRef();
     
-    const [currentSessionType,setCurrentSessionType] =useState('Session');
+    const [currentSessionType,setCurrentSessionType] = useState('Session');
 
     const [intervalId , setIntervalId] = useState(null);
 
@@ -50,9 +51,12 @@ function App() {
     const decrementBreakLengthByOneMinute = () =>{
         const newBreakLength = breakLength - 60;
 
-        if(newBreakLength > 0 ){
+        if(newBreakLength < 0 ){
 
-            setBreakLength(newBreakLength);
+            setBreakLength(0);
+        }else {
+
+          setBreakLength(newBreakLength)
         }
 
         
@@ -60,42 +64,33 @@ function App() {
     };
     const incrementBreakLengthByOneMinute = () =>{
 
-      const newSessionLength = sessionLength + 60;
-
-      if (newSessionLength > 0){
-
-          setSessionLength(newSessionLength);
-     
-
-    };
+    setBreakLength(breakLength +60)
   }
     const decrementSessionLengthByOneMinute = () =>{
        const newSessionLength = sessionLength - 60; 
 
-        if (newSessionLength > 0){
+       
+        if (newSessionLength < 0){
+
+          setSessionLength(0);
 
             setSessionLength(newSessionLength);
        
-        
-    };
-  }
-    const incrementSessionLengthByOneMinute = () =>{
-
-      const newSessionLength = sessionLength + 60; 
-      
-        const incrementSessionLength = sessionLength + 60 ;
-
-        if(newSessionLength <=  0) {
+        }else{
 
           setSessionLength(newSessionLength);
         }
+  
+  }
+    const incrementSessionLengthByOneMinute = () =>{
 
-       
-
+     
+      setSessionLength(sessionLength + 60)
     };
 
 
     const isStarted = intervalId !== null;
+    
 
     const handleStartStopClick = () => {
 
@@ -107,41 +102,69 @@ function App() {
         }else {
 
             const newIntervalId = setInterval(() => {
+              setTimeLeft(prevTimeLeft => {
 
-                setTimeLeft(prevTimeLeft => prevTimeLeft - 1);
+                const newTimeLeft = prevTimeLeft -1;
+
+                if(newTimeLeft >= 0){
+
+                  return prevTimeLeft - 1;
+                }
+
+                audioElement.current.play();
+                if(currentSessionType === 'Session'){
+
+                  setCurrentSessionType('Break');
+                  setTimeLeft(breakLength);
+                }
+
+                else if (currentSessionType === 'Break'){
+
+                    setCurrentSessionType('Session');
+
+                    setTimeLeft(sessionLength);
+                }
+                // setTimeLeft(prevTimeLeft => prevTimeLeft - 1);
                  
                 
-             },100);
+             });
+             
+            },100);
+
             setIntervalId(newIntervalId);
              
         }
 
-        
-    };
+      } ;
+    
+
+  
 
     const handleResetButtonClick = () => {
 
-    audioElement.current.load()
+    audioElement.current.pause();
+    audioElement.current.currentTime = 0 ;
 
-     clearInterval(intervalId)
 
-     setIntervalId(null)
+     clearInterval(intervalId);
 
-     setCurrentSessionType('Session')
+     setIntervalId(null);
 
-     setSessionLength(60 * 25)
+     setCurrentSessionType('Session');
 
-     setBreakLength(60 * 5)
+     setSessionLength(60 * 25);
 
-     setTimeLeft(60 * 25)
+     setBreakLength(60 * 5);
+
+     setTimeLeft(60 * 25);
     };
 
   return (
-    <div className="felx flex-col h-screen items-center justify-center bg-blue-500">
+    <div className="flex flex-col h-screen items-center justify-center bg-yellow-400">
 
       <div className="flex w-full justify-around ">
      <Break 
-     
+     breakLength={breakLength}
      decrementBreakLengthByOneMinute = {decrementBreakLengthByOneMinute}
      incrementBreakLengthByOneMinute = {incrementBreakLengthByOneMinute}
 
@@ -149,23 +172,29 @@ function App() {
      />
 
      <TimeLeft  
-     handleResetButtonClick={handleResetButtonClick}
-     timerLabel={currentSessionType}  handleStartStopClick={handleStartStopClick} sessionLength={sessionLength} startStopButtonLabel={isStarted ? 'Stop' : 'Start'} timeLeft={timeLeft} />
+     handleStartStopClick={handleStartStopClick} 
+     timerLabel={currentSessionType}  
+     startStopButtonLabel={isStarted ? 'Stop' : 'Start'} 
+     timeLeft={timeLeft} 
+     />
+
      <Session 
-      
+      sessionLength={sessionLength}
       decrementSessionLengthByOneMinute = {decrementSessionLengthByOneMinute}
 
       incrementSessionLengthByOneMinute = {incrementSessionLengthByOneMinute}
-
+     
      />
 
 </div>
-
+      <button className="border-2 text-red-200 font-semibold bg-green-900 px-4 py-2 rounded-lg border-solid  rounded-lgid" onClick={handleResetButtonClick}>
+        Reset
+      </button>
      
+     
+      <audio id="beep" ref={audioElement} src={soundfile} type='audio'>
 
-      <audio id="beep" ref={audioElement}>
-
-          <source src="https://onlineclock.net/audio/options.default.mp3" type="audio/mpeg" />
+           
       </audio>
 
     </div>
